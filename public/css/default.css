@@ -1,0 +1,35 @@
+:root {
+    --text: #103228;
+    --background: #ffffff;
+    --primary: #484427;
+    --secondary: #81815B;
+    --accent: #a52112;
+    
+    --spacing: .5rem;
+    --spacing-secondary: .25rem;
+    --font-size-primary: 1rem;
+    --font-size-secondary: .7rem;
+    --border-radius: 10px;
+}
+
+body {
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+
+    background-image: url('/public/img/background.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    color: var(--text);
+    font-family: Calibri, sans-serif;
+}
+
+div#content {
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

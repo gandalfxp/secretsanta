@@ -1,0 +1,31 @@
+extends default
+
+block css 
+    link(rel="stylesheet", href="/public/css/create.css")
+
+block content 
+    form(action="/create", method="post")
+        .inputWrapper 
+            label(for="name") Event name:
+            input(type="text", name="name")
+
+        .inputWrapper 
+            label(for="date") Event date: 
+            input(type="date", name="date")
+
+        .inputWrapper 
+            label(for="joinUntil") Users can join until:
+            input(type="date", name="joinUntil")
+
+        .inputWrapper 
+            label(for="priceEstimate") A gift should cost around:
+            .priceWrapper
+                input(type="number", name="priceEstimate")
+                select(name="currency")
+                    option(value="€") €
+                    option(value="£") £ 
+                    option(value="$") $
+                    option(value="¥") ¥
+
+        .inputWrapper 
+            input(type="submit", value="Create event!")
