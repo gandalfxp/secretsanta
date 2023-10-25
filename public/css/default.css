@@ -1,10 +1,7 @@
+@import url('/public/css/colors.css');
+@import url('/public/css/fonts.css');
+
 :root {
-    --text: #103228;
-    --background: #ffffff;
-    --primary: #484427;
-    --secondary: #81815B;
-    --accent: #a52112;
-    
     --spacing: .5rem;
     --spacing-secondary: .25rem;
     --font-size-primary: 1rem;
@@ -24,7 +21,7 @@ body {
     background-repeat: no-repeat;
 
     color: var(--text);
-    font-family: Calibri, sans-serif;
+    font-family: 'Roboto';
 }
 
 div#content {
