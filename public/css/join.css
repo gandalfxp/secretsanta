@@ -1,0 +1,5 @@
+span#name {
+    font-size: 1.5rem;
+    color: var(--secondary);
+    font-weight: bold;
+}

@@ -1,10 +1,14 @@
 div.priceWrapper {
     display: inline-flex;
+    justify-content: space-between;
     border: 1px solid var(--secondary);
     border-radius: var(--border-radius);
 }
 div.priceWrapper:hover {
     border: 1px solid var(--accent);
+}
+div.priceWrapper > input {
+    width: 100%;
 }
 div.priceWrapper > input, div.priceWrapper > select {
     border: none;

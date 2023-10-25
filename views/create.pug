@@ -18,9 +18,9 @@ block content
             input(type="date", name="joinUntil", required)
 
         .inputWrapper 
-            label(for="priceEstimate") A gift should cost around:
+            label(for="price") A gift should cost around:
             .priceWrapper
-                input(type="number", name="priceEstimate", required)
+                input(type="number", name="price", required)
                 select(name="currency")
                     option(value="€") €
                     option(value="£") £ 
@@ -29,3 +29,5 @@ block content
 
         .inputWrapper 
             input(type="submit", value="Create event!")
+
+        #errors #{errors}

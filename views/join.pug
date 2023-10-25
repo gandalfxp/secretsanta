@@ -3,8 +3,9 @@ extends default
 block css 
     link(rel="stylesheet", href="/public/css/join.css")
 
-block content 
-    form(action="/join", method="post")
+block content
+    form(action=`/join/${code}`, method="post")
+        span#name #{name}
         .inputWrapper 
             label(for="name") Your name:
             input(type="text", name="name", required)
