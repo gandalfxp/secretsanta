@@ -30,3 +30,57 @@ div#content {
     justify-content: center;
     align-items: center;
 }
+
+form {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--spacing);
+
+    backdrop-filter: blur(5px);
+    padding: var(--spacing);
+    
+    border: 1px solid var(--secondary);
+    border-radius: var(--border-radius);
+}
+
+label {
+    color: var(--primary);
+}
+
+input, textarea, select {
+    color: var(--text);
+    font-family: 'Roboto Mono';
+    padding: var(--spacing-secondary);
+    background-color: inherit;
+    border: 1px solid var(--secondary);
+    border-radius: var(--border-radius);
+}
+textarea {
+    resize: vertical;
+}
+input:focus, input:hover, textarea:focus, textarea:hover, select:focus, select:hover {
+    outline: none;
+    border: 1px solid var(--accent);
+}
+input[type=number] {
+    appearance: textfield;
+    text-align: right;
+}
+input[type=number]::-webkit-inner-spin-button {
+    display: none;
+}
+input[type=submit] {
+    background-color: var(--secondary);
+    color: var(--background);
+    border: none;
+}
+input[type=submit]:focus, input[type=submit]:hover {
+    cursor: pointer;
+    background-color: var(--accent);
+}
+
+div.inputWrapper {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--spacing-secondary);
+}

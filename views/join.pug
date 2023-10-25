@@ -1,0 +1,21 @@
+extends default
+
+block css 
+    link(rel="stylesheet", href="/public/css/join.css")
+
+block content 
+    form(action="/join", method="post")
+        .inputWrapper 
+            label(for="name") Your name:
+            input(type="text", name="name", required)
+
+        .inputWrapper 
+            label(for="email") Your email: 
+            input(type="email", name="email", required)
+
+        .inputWrapper 
+            label(for="wish") What are your wishes?
+            textarea(name="wish", cols="25", rows="5", required) 
+
+        .inputWrapper 
+            input(type="submit", value="Join event!")

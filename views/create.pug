@@ -7,20 +7,20 @@ block content
     form(action="/create", method="post")
         .inputWrapper 
             label(for="name") Event name:
-            input(type="text", name="name")
+            input(type="text", name="name", required)
 
         .inputWrapper 
             label(for="date") Event date: 
-            input(type="date", name="date")
+            input(type="date", name="date", required)
 
         .inputWrapper 
             label(for="joinUntil") Users can join until:
-            input(type="date", name="joinUntil")
+            input(type="date", name="joinUntil", required)
 
         .inputWrapper 
             label(for="priceEstimate") A gift should cost around:
             .priceWrapper
-                input(type="number", name="priceEstimate")
+                input(type="number", name="priceEstimate", required)
                 select(name="currency")
                     option(value="€") €
                     option(value="£") £ 
