@@ -18,5 +18,5 @@ also be useful for other events.
 ## Screenshots
 
 Creating an event | Joining an event
-:---: | :---:
-![](https://i.postimg.cc/BjQnDS0F/secretsanta-create.png) | ![](https://i.postimg.cc/5X7NSh4R/secretsanta-join.png)
+--- | ---
+![](https://i.postimg.cc/cLfgpCkF/secretsanta-create.png) | ![](https://i.postimg.cc/SKq2k4wk/secretsanta-join.png)
