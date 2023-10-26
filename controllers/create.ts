@@ -1,6 +1,6 @@
 import express from "express";
-import { MongoClient } from "mongodb";
-import { event } from "../types"
+import * as mongodb from "mongodb";
+import Event from "../models/event";
 
 export async function get(req: express.Request, res: express.Response) {
     var data: any = {
@@ -10,35 +10,20 @@ export async function get(req: express.Request, res: express.Response) {
     res.render('create', data);
 }
 
-function dateToSeconds(date: string): number {
-    return Math.floor(new Date(date).getTime() / 1000)
-}
-
-function generateCode(length: number): string {
-    const charset: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    var code: string = '';
-
-    for (let i = 0; i < length; i++) {
-        code += charset[Math.floor(Math.random() * charset.length)];
-    }
-
-    return code;
-}
-
 export async function post(req: express.Request, res: express.Response) {
-    const now: number = Date.now() / 1000;
+    const now: Date = new Date();
     const name: string = req.body.name;
-    const date: number = dateToSeconds(req.body.date);
-    const joinUntil: number = dateToSeconds(req.body.joinUntil);
+    const date: Date = new Date(req.body.date);
+    const lock: Date = new Date(req.body.lock);
     const price: number = req.body.price;
     const currency: string = req.body.currency;
 
     var errors: string = '';
-    if (date < now) {
+    if (date.getTime() < now.getTime()) {
         errors += 'The date must be in the future! ';
     }
 
-    if (joinUntil >= date) {
+    if (lock.getTime() >= date.getTime()) {
         errors += 'Users must be able to join before the event! ';
     }
 
@@ -51,19 +36,11 @@ export async function post(req: express.Request, res: express.Response) {
         return;
     }
 
-    const client: MongoClient = new MongoClient(process.env.MONGO_URI as string);
+    const client: mongodb.MongoClient = new mongodb.MongoClient(process.env.MONGO_URI as string);
     await client.connect();
+    const collection: mongodb.Collection<Event> = client.db('secretsanta').collection<Event>('events');
 
-    const event: event = {
-        name: name,
-        date: date,
-        joinUntil: joinUntil,
-        price: price,
-        currency: currency,
-        code: generateCode(8)
-    };
-
-    const collection = client.db('secretsanta').collection('events');
+    const event = new Event(name, date, lock, price, currency);
     collection.insertOne(event);
 
     res.redirect(`/join/${event.code}`)

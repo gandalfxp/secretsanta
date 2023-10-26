@@ -1,25 +1,16 @@
 import express from "express";
-import { MongoClient } from "mongodb";
-import { participant, event } from "../types"
-
-async function eventExists(code: string): Promise<false | event> {
-    const client: MongoClient = new MongoClient(process.env.MONGO_URI as string);
-    await client.connect();
-    const collection = client.db('secretsanta').collection<event>('events');
-    const event: event = await collection.findOne({code: code}) as event;
-
-    if (event == null) {
-        return false;
-    }
-
-    return event;
-}
+import * as mongodb from "mongodb";
+import Participant from "../models/participant";
+import Event from "../models/event";
 
 export async function get(req: express.Request, res: express.Response) {
-    const event = await eventExists(req.params.code);
+    const event: mongodb.WithId<Event> = await Event.get(req.params.code);
 
-    if (!event) {
-        res.sendStatus(404);
+    if (event == null) {
+        res.render('message', {
+            title: '404: Not found',
+            description: "The event you're looking for, doesn't exist..."
+        })
         return;
     }
     
@@ -27,37 +18,37 @@ export async function get(req: express.Request, res: express.Response) {
 }
 
 export async function post(req: express.Request, res: express.Response) {
-    const event = await eventExists(req.params.code);
+    const event: mongodb.WithId<Event> = await Event.get(req.params.code);
+    const email: string = req.body.email;
 
-    if (!event) {
-        res.sendStatus(404);
+    if (event == null) {
+        res.render('message', {
+            title: '404: Not found',
+            description: "The event you're looking for, doesn't exist..."
+        })
         return;
     }
 
-    const client: MongoClient = new MongoClient(process.env.MONGO_URI as string);
+    const client: mongodb.MongoClient = new mongodb.MongoClient(process.env.MONGO_URI as string);
     await client.connect();
-    const collection = client.db('secretsanta').collection<participant>('participants');
-
-    const name: string = req.body.name;
-    const email: string = req.body.email;
-    const wish: string = req.body.wish;
-    const joinedAt: number = Date.now() / 1000;
-
-    var participant: participant = await collection.findOne({code: event.code, email: email}) as participant;
+    const collection: mongodb.Collection<Participant> = client.db('secretsanta').collection<Participant>('participants');
+    const participant: mongodb.WithId<Participant> = await collection.findOne({code: event.code, email: email}) as mongodb.WithId<Participant>;
     
     if (participant != null) {
-        res.sendStatus(403);
+        res.render('message', {
+            title: '403: Forbidden',
+            description: `You have already joined ${event.name}...`
+        });
         return;
-    }
+    };
 
-    participant = {
-        name: name,
-        email: email,
-        code: event.code,
-        joinedAt: joinedAt,
-        wish: wish
-    }
-
-    await collection.insertOne(participant);
-    res.sendStatus(200);
+    const name: string = req.body.name;
+    const wish: string = req.body.wish;
+    const newParticipant: Participant = new Participant(name, email, wish, event.code);
+    await collection.insertOne(newParticipant);
+    
+    res.render('message', {
+        title: 'Joined!',
+        description: `You have joined ${event.name}. Thank you <3`
+    });
 }

@@ -4,6 +4,7 @@
 :root {
     --spacing: .5rem;
     --spacing-secondary: .25rem;
+    --font-size-headline: 1.5rem;
     --font-size-primary: 1rem;
     --font-size-secondary: .7rem;
     --border-radius: 10px;

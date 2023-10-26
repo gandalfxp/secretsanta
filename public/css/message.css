@@ -1,0 +1,11 @@
+span#title {
+    font-size: var(--font-size-headline);
+    color: var(--primary);
+    font-weight: bold;
+    text-align: center;
+}
+
+div#description {
+    font-family: 'Roboto Mono';
+    text-align: center;
+}
