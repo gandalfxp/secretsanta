@@ -1,4 +1,5 @@
 import * as mongodb from 'mongodb';
+import Participant from './participant';
 
 export default class Event {
     public name: string;
@@ -52,5 +53,61 @@ export default class Event {
         const collection: mongodb.Collection<Event> = client.db('secretsanta').collection<Event>('events');
 
         return await collection.findOne({code: code}) as mongodb.WithId<Event>;
+    }
+
+    /**
+     * Removes an event by its access code.
+     * 
+     * @param code Access code of the event
+     */
+    public static async remove(code: string): Promise<void> {
+        const client = new mongodb.MongoClient(process.env.MONGO_URI as string);
+        await client.connect();
+        const collection: mongodb.Collection<Event> = client.db('secretsanta').collection<Event>('events');
+
+        await collection.deleteOne({code: code});
+    }
+
+    /**
+     * Deletes all participants that joined an event.
+     * 
+     * @param code Access code of the event
+     */
+    public static async removeParticipants(code: string): Promise<void> {
+        const client = new mongodb.MongoClient(process.env.MONGO_URI as string);
+        await client.connect();
+        const collection: mongodb.Collection<Event> = client.db('secretsanta').collection<Event>('participants');
+
+        await collection.deleteMany({code: code});
+    }
+
+    /**
+     * Assigns each participant that joined an event another participant. Each
+     * participant can only be assigned once.
+     * 
+     * @param code Access code of the event
+     * @returns Promise of an array containing tuples of participants
+     */
+    public static async assignParticipants(code: string): Promise<[Participant, Participant][]> {
+        const client = new mongodb.MongoClient(process.env.MONGO_URI as string);
+        await client.connect();
+        const collection: mongodb.Collection<Participant> = client.db('secretsanta').collection<Participant>('participants');
+        const participants: Participant[] = await collection.find({code: code}).toArray();
+
+        var assigned: Participant[] = [];
+        var pairs: [Participant, Participant][] = [];
+    
+        for (let i = 0; i < participants.length; i++) {
+            var assigning: Participant = participants[i];
+    
+            while (assigning == participants[i] || assigned.includes(assigning)) {
+                assigning = participants[Math.floor(Math.random() * participants.length)];
+            }
+    
+            assigned.push(assigning);
+            pairs.push([participants[i], assigning]);
+        }
+    
+        return pairs;
     }
 }
