@@ -20,3 +20,28 @@ also be useful for other events.
 Creating an event | Joining an event
 --- | ---
 ![](https://i.postimg.cc/cLfgpCkF/secretsanta-create.png) | ![](https://i.postimg.cc/SKq2k4wk/secretsanta-join.png)
+
+## Run on local system
+
+You need to have `node, npm` and a running instance of `Mongo DB` installed.
+
+**1. Clone the repository and navigate into it:**
+
+`git clone https://github.com/theohoppe3/secretsanta.git && cd ./secretsanta`
+
+**2. Install dependencies:**
+
+`npm i`
+
+**3. Compile TypeScript:**
+
+`npx tsc`
+
+**4. Run the web server:**
+
+`node app`
+
+You can see a detailed list of all dependencies inside of `package.json`. If you
+need a little bit of customization, take a look at `.env`. Note that in order to
+be able to send emails, you have to modify `mailParticipants()` inside of `controllers/create.ts`.
+Currently, I am using a test account, supplied by `nodemailer`.
